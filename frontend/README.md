@@ -1,34 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BatteryEMS Frontend
 
-## Getting Started
+This is the Next.js frontend for BatteryEMS AI. It provides the building analysis form, charts, and recommendation views.
 
-First, run the development server:
+## Local Development
+Run the app from the `frontend/` directory:
 
 ```bash
+cd frontend
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` after the dev server starts.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
+Set these values for local development and for Vercel deployments:
 
-## Learn More
+- `NEXT_PUBLIC_API_URL`: base URL of the BatteryEMS backend API. Use `http://localhost:8000` for local development or the deployed backend URL in production.
+- `NEXT_PUBLIC_WS_URL`: websocket endpoint for the deployed backend, if your deployment uses one.
 
-To learn more about Next.js, take a look at the following resources:
+Production backend:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `https://batteryems-backend.onrender.com`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+If `NEXT_PUBLIC_API_URL` is not set, the frontend falls back to same-origin `/api` requests for local use only.
 
-## Deploy on Vercel
+## Vercel Deployment
+Deploy from the `frontend/` directory so Vercel treats this app as the project root.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+cd frontend
+vercel link
+vercel --prod
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Before the production deploy, make sure the Vercel project has the environment variables above configured for the correct backend and websocket endpoints.
+
+## Notes
+- The frontend is designed to work with a separately deployed backend.
+- Do not commit local environment files or build outputs.
