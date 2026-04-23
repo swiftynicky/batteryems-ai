@@ -10,18 +10,17 @@ const kpiConfig = [
     key: 'annual_savings_inr',
     label: 'Annual Savings',
     icon: IndianRupee,
-    color: 'var(--savings-green)',
-    glow: 'var(--savings-green-glow)',
-    format: (v: number, kpis: Record<string, number>) =>
-      `₹${formatINR(v)}`,
-    sub: (kpis: Record<string, number>) => formatPct(kpis.savings_pct),
+    color: 'var(--green)',
+    accent: '#22A86E',
+    format: (v: number) => `₹${formatINR(v)}`,
+    sub: (kpis: Record<string, number>) => `${formatPct(kpis.savings_pct)} reduction`,
   },
   {
     key: 'simple_payback_years',
     label: 'Payback Period',
     icon: Clock,
-    color: 'var(--solar-amber)',
-    glow: 'var(--solar-amber-glow)',
+    color: 'var(--amber)',
+    accent: '#E8940A',
     format: (v: number) => `${v.toFixed(1)} yrs`,
     sub: () => 'Simple payback',
   },
@@ -29,8 +28,8 @@ const kpiConfig = [
     key: 'peak_demand_reduction_pct',
     label: 'Peak Reduction',
     icon: Zap,
-    color: 'var(--battery-teal)',
-    glow: 'var(--battery-teal-glow)',
+    color: 'var(--teal)',
+    accent: '#0FA89A',
     format: (v: number) => formatPct(v),
     sub: () => 'Peak demand cut',
   },
@@ -38,17 +37,17 @@ const kpiConfig = [
     key: 'grid_import_reduction_pct',
     label: 'Grid Import ↓',
     icon: ArrowDownRight,
-    color: '#8B5CF6',
-    glow: 'rgba(139, 92, 246, 0.12)',
+    color: 'var(--violet)',
+    accent: '#7C6AF5',
     format: (v: number) => formatPct(v),
-    sub: () => 'Annual grid reduction',
+    sub: () => 'Annual reduction',
   },
   {
     key: 'solar_self_consumption_pct',
     label: 'Self-Consumption',
     icon: Sun,
-    color: 'var(--solar-amber)',
-    glow: 'var(--solar-amber-glow)',
+    color: 'var(--amber-bright)',
+    accent: '#F5A623',
     format: (v: number) => formatPct(v),
     sub: () => 'Solar used on-site',
   },
@@ -61,89 +60,47 @@ export default function KPICards() {
   const kpis = result.kpis as unknown as Record<string, number>;
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: '14px',
-      }}
-    >
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(5, 1fr)',
+      gap: 12,
+    }}>
       {kpiConfig.map((kpi, i) => {
         const Icon = kpi.icon;
         const value = kpis[kpi.key];
         return (
           <motion.div
             key={kpi.key}
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: i * 0.07 }}
-            className="glass-card"
-            style={{
-              padding: '18px 16px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              position: 'relative',
-              overflow: 'hidden',
-            }}
+            transition={{ duration: 0.35, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+            className="kpi-card"
+            style={{ '--kpi-accent': kpi.accent } as React.CSSProperties}
           >
-            {/* Subtle corner glow */}
-            <div
-              style={{
-                position: 'absolute',
-                top: '-20px',
-                right: '-20px',
-                width: '80px',
-                height: '80px',
-                borderRadius: '50%',
-                background: `radial-gradient(circle, ${kpi.glow} 0%, transparent 70%)`,
-                pointerEvents: 'none',
-              }}
-            />
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div
-                style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '7px',
-                  background: kpi.glow,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Icon size={15} color={kpi.color} />
-              </div>
-              <span
-                style={{
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  color: 'var(--text-muted)',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                }}
-              >
+            {/* Label row */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Icon size={13} color={kpi.color} />
+              <span style={{
+                fontSize: 10, fontWeight: 700,
+                color: 'var(--text-silent)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+              }}>
                 {kpi.label}
               </span>
             </div>
 
+            {/* Value */}
             <div>
-              <p
-                style={{
-                  fontSize: '24px',
-                  fontWeight: 800,
-                  color: kpi.color,
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1.1,
-                  fontVariantNumeric: 'tabular-nums',
-                }}
-              >
+              <div className="kpi-value" style={{ color: kpi.color }}>
                 {kpi.format(value, kpis)}
-              </p>
-              <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
+              </div>
+              <div style={{
+                fontSize: 10, color: 'var(--text-quiet)',
+                marginTop: 4,
+              }}>
                 {kpi.sub(kpis)}
-              </p>
+              </div>
             </div>
           </motion.div>
         );

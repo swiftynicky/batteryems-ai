@@ -31,68 +31,58 @@ export default function SocChart() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-      className="glass-card"
-      style={{ padding: '24px' }}
+      transition={{ duration: 0.4, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+      className="chart-panel"
     >
-      <div style={{ marginBottom: '16px' }}>
-        <h3 style={{ fontSize: '15px', fontWeight: 700, letterSpacing: '-0.01em' }}>
-          Battery State of Charge
-        </h3>
-        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
-          {batteryCapacity} kWh battery — 10-90% SOC window
-        </p>
+      <div className="chart-panel-header">
+        <div>
+          <div className="chart-title">Battery State of Charge</div>
+          <div className="chart-subtitle">{batteryCapacity} kWh — 10–90% SOC window</div>
+        </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={220}>
-        <AreaChart data={data} margin={{ top: 5, right: 10, bottom: 5, left: 0 }}>
+      <ResponsiveContainer width="100%" height={195}>
+        <AreaChart data={data} margin={{ top: 4, right: 8, bottom: 4, left: -8 }}>
           <defs>
             <linearGradient id="socGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#14B8A6" stopOpacity={0.4} />
-              <stop offset="100%" stopColor="#14B8A6" stopOpacity={0.02} />
+              <stop offset="0%" stopColor="var(--teal)" stopOpacity={0.2} />
+              <stop offset="100%" stopColor="var(--teal)" stopOpacity={0.02} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(71, 85, 105, 0.15)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" vertical={false} />
           <XAxis
             dataKey="hour_label"
-            tick={{ fill: '#64748B', fontSize: 10 }}
+            tick={{ fill: '#999', fontSize: 10 }}
             tickLine={false}
-            axisLine={{ stroke: 'rgba(71, 85, 105, 0.3)' }}
-            interval={2}
+            axisLine={false}
+            interval={3}
           />
           <YAxis
             domain={[0, batteryCapacity]}
-            tick={{ fill: '#64748B', fontSize: 10 }}
+            tick={{ fill: '#999', fontSize: 10 }}
             tickLine={false}
             axisLine={false}
             label={{
               value: 'kWh',
               angle: -90,
               position: 'insideLeft',
-              style: { fill: '#64748B', fontSize: 11 },
+              style: { fill: '#999', fontSize: 10 },
+              offset: 8,
             }}
           />
           <Tooltip
             content={({ active, payload, label }) => {
               if (!active || !payload?.[0]) return null;
               return (
-                <div
-                  style={{
-                    background: 'rgba(15, 23, 42, 0.95)',
-                    border: '1px solid var(--border-subtle)',
-                    borderRadius: '10px',
-                    padding: '10px 14px',
-                    backdropFilter: 'blur(12px)',
-                  }}
-                >
-                  <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                <div className="chart-tooltip">
+                  <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-quiet)', marginBottom: 6 }}>
                     {label}
                   </p>
-                  <p style={{ fontSize: '14px', fontWeight: 700, color: 'var(--battery-teal)' }}>
+                  <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 700, color: 'var(--teal)', fontVariantNumeric: 'tabular-nums' }}>
                     {Number(payload[0].value).toFixed(1)} kWh
-                    <span style={{ fontSize: '11px', color: 'var(--text-muted)', marginLeft: '6px' }}>
+                    <span style={{ fontSize: 11, color: 'var(--text-quiet)', marginLeft: 6 }}>
                       ({((Number(payload[0].value) / batteryCapacity) * 100).toFixed(0)}%)
                     </span>
                   </p>
@@ -104,24 +94,24 @@ export default function SocChart() {
           {/* SOC limits */}
           <ReferenceLine
             y={minSoc}
-            stroke="#EF4444"
-            strokeDasharray="6 4"
+            stroke="var(--red)"
+            strokeDasharray="5 4"
             strokeWidth={1}
-            label={{ value: 'Min 10%', position: 'left', fill: '#EF4444', fontSize: 10 }}
+            label={{ value: 'Min 10%', position: 'left', fill: 'var(--red)', fontSize: 9 }}
           />
           <ReferenceLine
             y={maxSoc}
-            stroke="#10B981"
-            strokeDasharray="6 4"
+            stroke="var(--green)"
+            strokeDasharray="5 4"
             strokeWidth={1}
-            label={{ value: 'Max 90%', position: 'left', fill: '#10B981', fontSize: 10 }}
+            label={{ value: 'Max 90%', position: 'left', fill: 'var(--green)', fontSize: 9 }}
           />
 
           <Area
             type="monotone"
             dataKey="soc_kwh"
-            stroke="#14B8A6"
-            strokeWidth={2.5}
+            stroke="var(--teal)"
+            strokeWidth={2}
             fill="url(#socGrad)"
           />
         </AreaChart>

@@ -4,18 +4,12 @@ import { motion } from 'framer-motion';
 import { useAnalysisStore } from '@/store/useAnalysisStore';
 import { formatINR } from '@/lib/format';
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Cell,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid,
+  Tooltip, ResponsiveContainer, Cell,
 } from 'recharts';
 
-const scenarioColors = ['#6B7280', '#F59E0B', '#14B8A6'];
-const scenarioLabels = ['Grid Only', 'Solar Only', 'Solar + Battery'];
+const SCENARIO_COLORS = ['#B0B0B0', '#C47A08', '#0D8F83'];
+const SCENARIO_LABELS = ['Grid Only', 'Solar Only', 'Solar + Battery'];
 
 export default function ScenarioComparison() {
   const result = useAnalysisStore((s) => s.result);
@@ -25,127 +19,116 @@ export default function ScenarioComparison() {
   const data = [
     {
       name: 'Grid Only',
+      short: 'Grid',
       annual_bill: sc.grid_only.annual_bill_inr,
       renewable: sc.grid_only.renewable_fraction_pct,
       peak: sc.grid_only.peak_grid_import_kw,
     },
     {
       name: 'Solar Only',
+      short: 'Solar',
       annual_bill: sc.solar_only.annual_bill_inr,
       renewable: sc.solar_only.renewable_fraction_pct,
       peak: sc.solar_only.peak_grid_import_kw,
     },
     {
-      name: 'Solar + Battery',
+      name: 'Solar + Batt.',
+      short: 'S+B',
       annual_bill: sc.solar_battery.annual_bill_inr,
       renewable: sc.solar_battery.renewable_fraction_pct,
       peak: sc.solar_battery.peak_grid_import_kw,
     },
   ];
 
-  const maxBill = sc.grid_only.annual_bill_inr;
+  const baseline = sc.grid_only.annual_bill_inr;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.25 }}
-      className="glass-card"
-      style={{ padding: '24px' }}
+      transition={{ duration: 0.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+      className="chart-panel"
     >
-      <div style={{ marginBottom: '16px' }}>
-        <h3 style={{ fontSize: '15px', fontWeight: 700, letterSpacing: '-0.01em' }}>
-          Scenario Comparison
-        </h3>
-        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
-          Annual electricity bill across configurations
-        </p>
+      <div className="chart-panel-header">
+        <div>
+          <div className="chart-title">Scenario Comparison</div>
+          <div className="chart-subtitle">Annual bill — ₹ across 3 configurations</div>
+        </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={240}>
-        <BarChart data={data} margin={{ top: 5, right: 10, bottom: 5, left: 10 }} barSize={48}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(71, 85, 105, 0.15)" />
+      <ResponsiveContainer width="100%" height={170}>
+        <BarChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: -8 }} barSize={34}>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" vertical={false} />
           <XAxis
-            dataKey="name"
-            tick={{ fill: '#94A3B8', fontSize: 11 }}
-            tickLine={false}
-            axisLine={{ stroke: 'rgba(71, 85, 105, 0.3)' }}
-          />
-          <YAxis
-            tick={{ fill: '#64748B', fontSize: 10 }}
+            dataKey="short"
+            tick={{ fill: '#999', fontSize: 10 }}
             tickLine={false}
             axisLine={false}
-            tickFormatter={(v: number) => `₹${(v / 100000).toFixed(1)}L`}
+          />
+          <YAxis
+            tick={{ fill: '#999', fontSize: 10 }}
+            tickLine={false}
+            axisLine={false}
+            tickFormatter={(v: number) => `₹${(v / 100000).toFixed(0)}L`}
           />
           <Tooltip
             content={({ active, payload }) => {
               if (!active || !payload?.[0]) return null;
               const d = payload[0].payload;
-              const savings = maxBill - d.annual_bill;
+              const savings = baseline - d.annual_bill;
               return (
-                <div
-                  style={{
-                    background: 'rgba(15, 23, 42, 0.95)',
-                    border: '1px solid var(--border-subtle)',
-                    borderRadius: '10px',
-                    padding: '12px 14px',
-                    backdropFilter: 'blur(12px)',
-                    minWidth: '180px',
-                  }}
-                >
-                  <p style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '8px' }}>
+                <div className="chart-tooltip">
+                  <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-loud)', marginBottom: 8 }}>
                     {d.name}
                   </p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <Row label="Annual Bill" value={`₹${formatINR(d.annual_bill)}`} />
-                    {savings > 0 && (
-                      <Row label="Savings" value={`₹${formatINR(savings)}`} color="var(--savings-green)" />
-                    )}
-                    <Row label="Renewable" value={`${d.renewable.toFixed(1)}%`} />
-                    <Row label="Peak Import" value={`${d.peak.toFixed(1)} kW`} />
-                  </div>
+                  <TRow label="Annual Bill" value={`₹${formatINR(d.annual_bill)}`} />
+                  {savings > 0 && (
+                    <TRow label="vs Grid-Only" value={`−₹${formatINR(savings)}`} color="var(--green)" />
+                  )}
+                  <TRow label="Renewable" value={`${d.renewable.toFixed(1)}%`} />
+                  <TRow label="Peak Import" value={`${d.peak.toFixed(1)} kW`} />
                 </div>
               );
             }}
           />
-          <Bar dataKey="annual_bill" name="Annual Bill" radius={[6, 6, 0, 0]}>
+          <Bar dataKey="annual_bill" radius={[4, 4, 0, 0]}>
             {data.map((_, i) => (
-              <Cell key={i} fill={scenarioColors[i]} opacity={0.85} />
+              <Cell key={i} fill={SCENARIO_COLORS[i]} />
             ))}
           </Bar>
         </BarChart>
       </ResponsiveContainer>
 
-      {/* Savings deltas */}
-      <div
-        style={{
-          display: 'flex',
-          gap: '12px',
-          marginTop: '14px',
-          justifyContent: 'center',
-        }}
-      >
+      {/* Savings delta pills */}
+      <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
         {data.map((d, i) => {
-          const savings = maxBill - d.annual_bill;
+          const savings = baseline - d.annual_bill;
           return (
-            <div
-              key={d.name}
-              style={{
-                padding: '8px 14px',
-                borderRadius: '8px',
-                background: 'rgba(30, 41, 59, 0.4)',
-                border: '1px solid var(--border-subtle)',
-                textAlign: 'center',
-                flex: 1,
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginBottom: '4px' }}>
-                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: scenarioColors[i], display: 'inline-block' }} />
-                <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{scenarioLabels[i]}</span>
+            <div key={d.name} style={{
+              flex: 1,
+              padding: '6px 10px',
+              borderRadius: 'var(--r-sm)',
+              border: '1px solid var(--border-1)',
+              background: 'var(--bg-overlay)',
+              textAlign: 'center',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, marginBottom: 2 }}>
+                <span style={{
+                  display: 'inline-block', width: 6, height: 6, borderRadius: '50%',
+                  background: SCENARIO_COLORS[i],
+                }} />
+                <span style={{ fontSize: 9, color: 'var(--text-quiet)', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>
+                  {SCENARIO_LABELS[i]}
+                </span>
               </div>
-              <p style={{ fontSize: '15px', fontWeight: 700, color: savings > 0 ? 'var(--savings-green)' : 'var(--text-secondary)' }}>
-                {savings > 0 ? `−₹${formatINR(savings)}` : '₹0'}
-              </p>
+              <div style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 13, fontWeight: 700,
+                color: savings > 0 ? 'var(--green)' : 'var(--text-quiet)',
+                fontVariantNumeric: 'tabular-nums',
+              }}>
+                {savings > 0 ? `−₹${formatINR(savings)}` : '—'}
+              </div>
             </div>
           );
         })}
@@ -154,13 +137,15 @@ export default function ScenarioComparison() {
   );
 }
 
-function Row({ label, value, color }: { label: string; value: string; color?: string }) {
+function TRow({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
-      <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{label}</span>
-      <span style={{ fontSize: '12px', fontWeight: 600, color: color || 'var(--text-primary)', fontVariantNumeric: 'tabular-nums' }}>
-        {value}
-      </span>
+    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 3 }}>
+      <span style={{ fontSize: 11, color: 'var(--text-quiet)' }}>{label}</span>
+      <span style={{
+        fontSize: 11, fontWeight: 600,
+        color: color || 'var(--text-normal)',
+        fontVariantNumeric: 'tabular-nums',
+      }}>{value}</span>
     </div>
   );
 }

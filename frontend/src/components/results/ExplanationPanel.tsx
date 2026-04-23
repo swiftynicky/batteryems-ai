@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { useAnalysisStore } from '@/store/useAnalysisStore';
-import { Lightbulb } from 'lucide-react';
 
 export default function ExplanationPanel() {
   const result = useAnalysisStore((s) => s.result);
@@ -10,53 +9,63 @@ export default function ExplanationPanel() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.3 }}
-      className="glass-card"
-      style={{ padding: '24px' }}
+      transition={{ duration: 0.4, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+      className="card"
+      style={{ padding: '20px 22px' }}
     >
-      <div style={{ marginBottom: '16px' }}>
-        <h3 style={{ fontSize: '15px', fontWeight: 700, letterSpacing: '-0.01em' }}>
-          AI Analysis Insights
+      {/* Header */}
+      <div style={{ marginBottom: 14 }}>
+        <div style={{
+          fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
+          textTransform: 'uppercase', color: 'var(--text-silent)',
+          marginBottom: 4,
+        }}>
+          Analysis Insights
+        </div>
+        <h3 style={{
+          fontFamily: "'Space Grotesk', sans-serif",
+          fontSize: 14, fontWeight: 600,
+          color: 'var(--text-loud)',
+          letterSpacing: '-0.01em',
+        }}>
+          Key findings from the optimizer
         </h3>
-        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
-          Key findings from the optimization engine
-        </p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      {/* Insights list */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {result.explanations.map((text, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, x: -10 }}
+            initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: 0.35 + i * 0.08 }}
+            transition={{ duration: 0.3, delay: 0.3 + i * 0.07 }}
             style={{
               display: 'flex',
-              gap: '12px',
-              padding: '14px 16px',
-              borderRadius: '10px',
-              background: 'rgba(30, 41, 59, 0.3)',
-              border: '1px solid var(--border-subtle)',
+              gap: 10,
+              padding: '10px 12px',
+              borderRadius: 'var(--r-sm)',
+              background: 'var(--bg-overlay)',
+              borderLeft: '2px solid var(--amber-border)',
               alignItems: 'flex-start',
             }}
           >
-            <div
-              style={{
-                minWidth: '28px',
-                height: '28px',
-                borderRadius: '7px',
-                background: 'var(--solar-amber-glow)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: '1px',
-              }}
-            >
-              <Lightbulb size={14} color="var(--solar-amber)" />
-            </div>
-            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, flex: 1 }}>
+            <span style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: 11, fontWeight: 700,
+              color: 'var(--amber)',
+              minWidth: 16, paddingTop: 1,
+            }}>
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <p style={{
+              fontSize: 12.5,
+              color: 'var(--text-normal)',
+              lineHeight: 1.6,
+              flex: 1,
+            }}>
               {text}
             </p>
           </motion.div>
@@ -65,23 +74,26 @@ export default function ExplanationPanel() {
 
       {/* Assumptions */}
       {result.assumptions && result.assumptions.length > 0 && (
-        <div style={{ marginTop: '18px', paddingTop: '16px', borderTop: '1px solid var(--border-subtle)' }}>
-          <p style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
+        <div style={{
+          marginTop: 16,
+          paddingTop: 14,
+          borderTop: '1px solid var(--border-0)',
+        }}>
+          <div style={{
+            fontSize: 9, fontWeight: 700, letterSpacing: '0.1em',
+            textTransform: 'uppercase', color: 'var(--text-silent)',
+            marginBottom: 8,
+          }}>
             Assumptions & Limitations
-          </p>
-          <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          </div>
+          <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
             {result.assumptions.map((a, i) => (
-              <li
-                key={i}
-                style={{
-                  fontSize: '11px',
-                  color: 'var(--text-muted)',
-                  lineHeight: 1.5,
-                  paddingLeft: '12px',
-                  position: 'relative',
-                }}
-              >
-                <span style={{ position: 'absolute', left: 0, color: 'var(--text-muted)' }}>•</span>
+              <li key={i} style={{
+                fontSize: 11, color: 'var(--text-quiet)',
+                lineHeight: 1.5,
+                display: 'flex', gap: 7, alignItems: 'baseline',
+              }}>
+                <span style={{ color: 'var(--text-silent)', flexShrink: 0, fontSize: 9 }}>◆</span>
                 {a}
               </li>
             ))}
