@@ -93,7 +93,7 @@ export default function KPICards() {
             {/* Value */}
             <div>
               <div className="kpi-value" style={{ color: kpi.color }}>
-                {kpi.format(value, kpis)}
+                {kpi.format(value)}
               </div>
               <div style={{
                 fontSize: 10, color: 'var(--text-quiet)',
