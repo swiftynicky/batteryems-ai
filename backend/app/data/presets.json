@@ -1,0 +1,32 @@
+[
+  {
+    "id": "apartment_society",
+    "name": "Apartment Society",
+    "description": "100-unit apartment complex with strong evening peak and moderate daytime base load.",
+    "monthly_kwh": 12000,
+    "roof_area_sqm": 450,
+    "location": "Kochi",
+    "suggested_max_solar_kw": 50,
+    "suggested_max_battery_kwh": 40
+  },
+  {
+    "id": "office_building",
+    "name": "Office Building",
+    "description": "Commercial office load with high daytime demand and lighter weekend operation.",
+    "monthly_kwh": 18000,
+    "roof_area_sqm": 600,
+    "location": "Bengaluru",
+    "suggested_max_solar_kw": 60,
+    "suggested_max_battery_kwh": 50
+  },
+  {
+    "id": "telecom_tower",
+    "name": "Telecom Tower",
+    "description": "Nearly flat 24-hour critical load with limited rooftop area.",
+    "monthly_kwh": 9000,
+    "roof_area_sqm": 160,
+    "location": "Chennai",
+    "suggested_max_solar_kw": 20,
+    "suggested_max_battery_kwh": 30
+  }
+]

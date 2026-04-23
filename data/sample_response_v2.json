@@ -1,0 +1,400 @@
+﻿{
+  "recommendation": {
+    "solar_kw": 50.0,
+    "battery_kwh": 40.0,
+    "annual_savings_inr": 413498.268,
+    "simple_payback_years": 4.982,
+    "peak_demand_reduction_pct": 30.368,
+    "grid_import_reduction_pct": 40.706,
+    "score": 0.8758
+  },
+  "best_by_payback": {
+    "solar_kw": 10.0,
+    "battery_kwh": 0.0,
+    "annual_savings_inr": 85699.201,
+    "simple_payback_years": 3.967,
+    "peak_demand_reduction_pct": 0.0,
+    "grid_import_reduction_pct": 8.525,
+    "score": 0.1352
+  },
+  "best_by_savings": {
+    "solar_kw": 50.0,
+    "battery_kwh": 40.0,
+    "annual_savings_inr": 413498.268,
+    "simple_payback_years": 4.982,
+    "peak_demand_reduction_pct": 30.368,
+    "grid_import_reduction_pct": 40.706,
+    "score": 0.8758
+  },
+  "explanations": [
+    "A 50 kW solar system with a 40 kWh battery reduces the annual bill by about INR 413,498 compared with grid-only operation.",
+    "Solar alone captures roughly INR 374,073 of the total savings, while battery scheduling adds another INR 39,425 by shifting surplus energy into high-value hours.",
+    "The recommended system cuts peak grid demand by 30.4% and annual grid imports by 40.7%, which directly supports peak-shaving and bill reduction.",
+    "Estimated solar self-consumption is 97.2%, so most PV generation is used on-site instead of being exported at the lower feed-in rate.",
+    "At the assumed capex rates, the simple payback is about 5.0 years."
+  ],
+  "kpis": {
+    "annual_bill_inr": 591750.102,
+    "annual_savings_inr": 413498.268,
+    "savings_pct": 41.134,
+    "simple_payback_years": 4.982,
+    "peak_demand_reduction_pct": 30.368,
+    "grid_import_reduction_pct": 40.706,
+    "solar_self_consumption_pct": 97.19,
+    "battery_utilization_cycles_per_year": 233.441,
+    "renewable_fraction_pct": 40.641,
+    "annual_grid_import_kwh": 85149.963,
+    "annual_grid_export_kwh": 1719.835,
+    "annual_solar_generation_kwh": 61214.501,
+    "annual_load_kwh": 143606.91
+  },
+  "representative_day_type": "summer_weekday",
+  "hourly_series": [
+    {
+      "hour": 0,
+      "load_kw": 10.886,
+      "solar_kw": 0.0,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 10.886,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 10.886
+    },
+    {
+      "hour": 1,
+      "load_kw": 9.385,
+      "solar_kw": 0.0,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 9.385,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 9.385
+    },
+    {
+      "hour": 2,
+      "load_kw": 9.422,
+      "solar_kw": 0.0,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 9.422,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 9.422
+    },
+    {
+      "hour": 3,
+      "load_kw": 9.528,
+      "solar_kw": 0.0,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 9.528,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 9.528
+    },
+    {
+      "hour": 4,
+      "load_kw": 9.001,
+      "solar_kw": 0.0,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 9.001,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 9.001
+    },
+    {
+      "hour": 5,
+      "load_kw": 11.749,
+      "solar_kw": 0.0,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 11.749,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 11.749
+    },
+    {
+      "hour": 6,
+      "load_kw": 16.615,
+      "solar_kw": 3.43,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 13.185,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 16.615
+    },
+    {
+      "hour": 7,
+      "load_kw": 19.344,
+      "solar_kw": 6.32,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 13.024,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 19.344
+    },
+    {
+      "hour": 8,
+      "load_kw": 20.998,
+      "solar_kw": 10.421,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 10.577,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 20.998
+    },
+    {
+      "hour": 9,
+      "load_kw": 18.408,
+      "solar_kw": 15.374,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 3.034,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 18.408
+    },
+    {
+      "hour": 10,
+      "load_kw": 18.12,
+      "solar_kw": 20.296,
+      "battery_charge_kw": 2.176,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 6.064,
+      "grid_import_kw": 0.0,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 18.12
+    },
+    {
+      "hour": 11,
+      "load_kw": 17.413,
+      "solar_kw": 23.977,
+      "battery_charge_kw": 6.564,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 12.291,
+      "grid_import_kw": 0.0,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 17.413
+    },
+    {
+      "hour": 12,
+      "load_kw": 16.279,
+      "solar_kw": 25.347,
+      "battery_charge_kw": 9.068,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 20.894,
+      "grid_import_kw": 0.0,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 16.279
+    },
+    {
+      "hour": 13,
+      "load_kw": 16.663,
+      "solar_kw": 23.977,
+      "battery_charge_kw": 7.314,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 27.833,
+      "grid_import_kw": 0.0,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 16.663
+    },
+    {
+      "hour": 14,
+      "load_kw": 16.626,
+      "solar_kw": 20.296,
+      "battery_charge_kw": 3.67,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 31.314,
+      "grid_import_kw": 0.0,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 16.626
+    },
+    {
+      "hour": 15,
+      "load_kw": 16.509,
+      "solar_kw": 15.374,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 31.314,
+      "grid_import_kw": 1.135,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 16.509
+    },
+    {
+      "hour": 16,
+      "load_kw": 20.029,
+      "solar_kw": 10.421,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 31.314,
+      "grid_import_kw": 9.608,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 20.029
+    },
+    {
+      "hour": 17,
+      "load_kw": 22.816,
+      "solar_kw": 6.32,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 31.314,
+      "grid_import_kw": 16.496,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 22.816
+    },
+    {
+      "hour": 18,
+      "load_kw": 30.498,
+      "solar_kw": 3.43,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 4.794,
+      "soc_kwh": 26.261,
+      "grid_import_kw": 22.274,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 30.498
+    },
+    {
+      "hour": 19,
+      "load_kw": 31.988,
+      "solar_kw": 0.0,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 9.714,
+      "soc_kwh": 16.021,
+      "grid_import_kw": 22.274,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 31.988
+    },
+    {
+      "hour": 20,
+      "load_kw": 30.699,
+      "solar_kw": 0.0,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 8.425,
+      "soc_kwh": 7.14,
+      "grid_import_kw": 22.274,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 30.699
+    },
+    {
+      "hour": 21,
+      "load_kw": 25.253,
+      "solar_kw": 0.0,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 2.979,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 22.274,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 25.253
+    },
+    {
+      "hour": 22,
+      "load_kw": 20.414,
+      "solar_kw": 0.0,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 20.414,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 20.414
+    },
+    {
+      "hour": 23,
+      "load_kw": 13.356,
+      "solar_kw": 0.0,
+      "battery_charge_kw": 0.0,
+      "battery_discharge_kw": 0.0,
+      "soc_kwh": 4.0,
+      "grid_import_kw": 13.356,
+      "grid_export_kw": 0.0,
+      "baseline_grid_kw": 13.356
+    }
+  ],
+  "scenario_comparison": {
+    "grid_only": {
+      "annual_bill_inr": 1005248.37,
+      "annual_grid_import_kwh": 143606.91,
+      "peak_grid_import_kw": 31.988,
+      "renewable_fraction_pct": 0.0
+    },
+    "solar_only": {
+      "annual_bill_inr": 631175.226,
+      "annual_grid_import_kwh": 94487.613,
+      "peak_grid_import_kw": 31.988,
+      "renewable_fraction_pct": 34.093
+    },
+    "solar_battery": {
+      "annual_bill_inr": 591750.102,
+      "annual_grid_import_kwh": 85149.963,
+      "peak_grid_import_kw": 22.274,
+      "renewable_fraction_pct": 40.641
+    }
+  },
+  "scheduler_benchmark": [
+    {
+      "mode": "greedy",
+      "annual_bill_inr": 591748.898,
+      "peak_demand_reduction_pct": 0.0,
+      "grid_import_reduction_pct": 40.706
+    },
+    {
+      "mode": "rule_based",
+      "annual_bill_inr": 591750.102,
+      "peak_demand_reduction_pct": 30.368,
+      "grid_import_reduction_pct": 40.706
+    },
+    {
+      "mode": "forecast_assisted",
+      "annual_bill_inr": 591748.282,
+      "peak_demand_reduction_pct": 20.283,
+      "grid_import_reduction_pct": 40.706
+    }
+  ],
+  "forecast_metrics": {
+    "rmse_kw": 3.6645,
+    "mae_kw": 2.8182
+  },
+  "sensitivity": [
+    {
+      "label": "Low solar, flat tariff",
+      "annual_bill_inr": 621932.306,
+      "annual_savings_inr": 383316.064,
+      "savings_pct": 38.131,
+      "simple_payback_years": 5.374
+    },
+    {
+      "label": "Normal solar, flat tariff",
+      "annual_bill_inr": 580002.657,
+      "annual_savings_inr": 425245.713,
+      "savings_pct": 42.303,
+      "simple_payback_years": 4.844
+    },
+    {
+      "label": "High solar, flat tariff",
+      "annual_bill_inr": 544204.113,
+      "annual_savings_inr": 461044.257,
+      "savings_pct": 45.864,
+      "simple_payback_years": 4.468
+    },
+    {
+      "label": "Normal solar, ToU tariff",
+      "annual_bill_inr": 587751.425,
+      "annual_savings_inr": 449733.559,
+      "savings_pct": 43.348,
+      "simple_payback_years": 4.58
+    }
+  ],
+  "assumptions": [
+    "Building-level economic model only; no power-flow, voltage, or protection analysis.",
+    "Hourly time-step with 6 weighted representative day types totaling 365 days.",
+    "Battery constrained to 10-90% SOC, 90% round-trip efficiency, and 1C max power.",
+    "Solar generation is synthetic with seasonal irradiance, cloud attenuation, and 87% derating.",
+    "Battery charges from on-site solar surplus and discharges to serve local load deficits.",
+    "No battery degradation is included in the base payback estimate."
+  ]
+}
