@@ -23,6 +23,8 @@ const FALLBACK_PRESETS = [
   { id: 'school', name: 'School / College Campus', description: 'Educational campus with daytime-dominant demand.', monthly_kwh: 5000, roof_area_sqm: 350, location: 'Kochi', suggested_max_solar_kw: 30, suggested_max_battery_kwh: 20 },
 ];
 
+const SUPPORTED_LOCATIONS = ['Kochi', 'Bengaluru', 'Chennai'];
+
 export default function AnalysisForm() {
   const {
     presets,
@@ -52,6 +54,10 @@ export default function AnalysisForm() {
   /* Use API presets if available, else fallback */
   const availablePresets = presets.length > 0 ? presets : FALLBACK_PRESETS;
   const selectedPreset = availablePresets.find((p) => p.id === presetId);
+  const locationOptions = Array.from(new Set([
+    ...SUPPORTED_LOCATIONS,
+    ...availablePresets.map((p) => p.location),
+  ]));
 
   /* Apply fallback preset on first render if API failed */
   useEffect(() => {
@@ -175,12 +181,15 @@ export default function AnalysisForm() {
                 <MapPin size={10} style={{ display: 'inline', marginRight: 3 }} />
                 Location
               </FieldLabel>
-              <input
-                type="text"
+              <select
                 className="input-field"
                 value={location}
                 onChange={(e) => setField('location', e.target.value)}
-              />
+              >
+                {locationOptions.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
             </div>
           </div>
 

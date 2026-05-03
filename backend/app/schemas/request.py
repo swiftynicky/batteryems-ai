@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -13,7 +13,7 @@ class BuildingInput(BaseModel):
     preset_id: str = Field(default="apartment_society")
     monthly_kwh: float = Field(default=12000, gt=0)
     roof_area_sqm: float = Field(default=450, gt=0)
-    location: str = Field(default="Kochi", min_length=2)
+    location: Literal["Kochi", "Bengaluru", "Chennai"] = Field(default="Kochi")
     load_source: str = Field(default="synthetic")
 
 

@@ -1,82 +1,93 @@
 # BatteryEMS AI
 
-**Intelligent Solar + Battery Planning Advisor for Buildings**
+BatteryEMS AI is a web-based decision-support system for evaluating solar photovoltaic (PV) and battery energy storage system (BESS) configurations for building-scale electricity consumers. The platform combines synthetic load modelling, location-aware PV estimation, tariff modelling, battery dispatch simulation, and multi-scenario financial analysis to support early-stage energy planning.
 
-BatteryEMS AI is a decision-support system that helps building operators evaluate optimal solar PV and battery energy storage system (BESS) configurations. Given a building's load profile, location, tariff structure, and system constraints, it runs a multi-scenario optimization to recommend the best system sizing — balancing annual savings, payback period, and grid independence.
+The application is intended for comparative feasibility assessment rather than detailed engineering design. It helps estimate how different PV and battery capacities affect annual electricity cost, grid import, peak demand, self-consumption, and simple payback.
 
-> Built as a B.Tech Minor Project (EE3094E) at NIT Calicut.
+## Live Services
 
----
+| Service | URL |
+| --- | --- |
+| Frontend Dashboard | [https://batteryems.vercel.app](https://batteryems.vercel.app) |
+| Backend API | [https://batteryems-backend.onrender.com](https://batteryems-backend.onrender.com) |
+
+## Objectives
+
+- Estimate building-level solar PV generation and battery dispatch for representative daily demand profiles.
+- Compare grid-only, solar-only, and solar-plus-battery operating cases.
+- Rank candidate system sizes using financial and operational metrics.
+- Support flat-rate and time-of-use electricity tariff assumptions.
+- Provide an interactive dashboard for exploring load, generation, battery state of charge, grid import, savings, and sensitivity results.
+
+## System Overview
+
+```text
+┌─────────────────────┐       ┌─────────────────────────┐
+│   Next.js Frontend  │──────▶│   FastAPI Backend        │
+│   Vercel            │  API  │   Render                 │
+│                     │       │                          │
+│  Dashboard UI       │       │  Load profile engine     │
+│  Scenario controls  │       │  Solar generation model  │
+│  Recharts visuals   │       │  Battery dispatch model  │
+│  Zustand state      │       │  Tariff and finance      │
+└─────────────────────┘       │  Scenario optimization   │
+                              └─────────────────────────┘
+```
+
+## Methodology
+
+BatteryEMS evaluates system performance through a deterministic simulation pipeline:
+
+1. A representative hourly load profile is generated from building type and monthly energy consumption.
+2. Solar PV output is estimated from roof area, location, and candidate PV capacity.
+3. Battery operation is simulated with state-of-charge limits and charge/discharge constraints.
+4. Electricity bills are computed using flat-rate or time-of-use tariffs.
+5. Candidate PV and BESS sizes are compared using annualized savings, payback, grid independence, peak reduction, and self-consumption indicators.
+6. Sensitivity cases are generated to assess how tariff and irradiance assumptions influence the recommendation.
 
 ## Key Features
 
 | Feature | Description |
-|---------|-------------|
-| **AI-Powered Sizing** | Evaluates all candidate solar × battery combinations and scores them on a composite objective (savings, payback, peak reduction) |
-| **Scenario Comparison** | Side-by-side annual bill comparison: Grid-Only vs Solar-Only vs Solar + Battery |
-| **24-Hour Energy Simulation** | Hourly dispatch simulation showing load, solar generation, battery charge/discharge, and grid import |
-| **Battery SOC Tracking** | Visualizes state-of-charge within the 10–90% operating window |
-| **Sensitivity Analysis** | Tests the recommendation against varying irradiance and tariff scenarios |
-| **Building Presets** | Pre-configured profiles for apartments, offices, hospitals, and campuses |
+| --- | --- |
+| System sizing | Evaluates candidate solar and battery capacity combinations. |
+| Scenario comparison | Compares grid-only, solar-only, and solar-plus-battery cases. |
+| Battery dispatch | Simulates charge/discharge behavior and state-of-charge limits. |
+| Tariff modelling | Supports flat-rate and time-of-use electricity pricing. |
+| Sensitivity analysis | Tests recommendation stability under changed tariff and irradiance assumptions. |
+| Building presets | Provides representative presets for common building profiles. |
+| Interactive visualization | Displays hourly energy flows, KPIs, bill comparison, and recommendation details. |
 
----
-
-## Architecture
-
-```
-┌─────────────────────┐       ┌─────────────────────────┐
-│   Next.js Frontend  │──────▶│   FastAPI Backend        │
-│   (Vercel)          │  API  │   (Render)               │
-│                     │       │                          │
-│  • Dashboard UI     │       │  • Load profile engine   │
-│  • Recharts viz     │       │  • Solar generation model│
-│  • Zustand state    │       │  • Battery scheduler     │
-│  • Dynamic imports  │       │  • Financial calculator  │
-└─────────────────────┘       │  • Scenario optimizer    │
-                              └─────────────────────────┘
-```
-
-### Backend Modules (`backend/app/engine/`)
+## Backend Modules
 
 | Module | Purpose |
-|--------|---------|
-| `load.py` | Synthetic hourly load profile generation from monthly kWh |
-| `solar.py` | Solar PV generation model based on location and roof area |
-| `battery.py` | Battery charge/discharge simulation with SOC constraints |
-| `scheduler.py` | Rule-based and forecast-assisted dispatch scheduling |
-| `tariff.py` | Electricity tariff calculation (flat rate and time-of-use) |
-| `finance.py` | CapEx, annual savings, and simple payback computation |
-| `scenario.py` | Multi-scenario comparison and candidate ranking |
-| `metrics.py` | KPI calculation (peak reduction, self-consumption, etc.) |
-| `annualize.py` | Weighted annualization from representative days |
+| --- | --- |
+| `backend/app/engine/load.py` | Generates synthetic hourly load profiles from monthly demand. |
+| `backend/app/engine/solar.py` | Estimates PV generation from location, available roof area, and system size. |
+| `backend/app/engine/battery.py` | Simulates battery charge, discharge, and state of charge. |
+| `backend/app/engine/scheduler.py` | Implements rule-based and forecast-assisted dispatch strategies. |
+| `backend/app/engine/tariff.py` | Calculates electricity costs under supported tariff structures. |
+| `backend/app/engine/finance.py` | Computes capital cost, savings, and payback metrics. |
+| `backend/app/engine/scenario.py` | Runs candidate evaluation and scenario ranking. |
+| `backend/app/engine/metrics.py` | Calculates technical performance indicators. |
 
-### Frontend Stack
+## Technology Stack
 
-- **Framework:** Next.js 16 (App Router)
-- **State:** Zustand
-- **Charts:** Recharts (lazy-loaded)
-- **Icons:** Lucide React
-- **Animation:** Framer Motion
-- **Design:** Custom CSS design system — Space Grotesk + Inter typography, amber/teal accent palette
+| Layer | Tools |
+| --- | --- |
+| Frontend | Next.js, React, TypeScript, Zustand, Recharts, Lucide React |
+| Backend | FastAPI, Pydantic, NumPy, Pandas |
+| Deployment | Vercel for the frontend, Render for the backend |
+| Testing | Pytest for backend smoke tests, ESLint for frontend checks |
 
----
+## API Endpoints
 
-## Live Demo
-
-| Service | URL |
-|---------|-----|
-| Frontend | *Deployed on Vercel — see below* |
-| Backend | *Deployed on Render — see below* |
-
----
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/health` | Service health check. |
+| `GET` | `/api/presets` | Returns building presets and default tariff/cost assumptions. |
+| `POST` | `/api/analyze` | Runs the full analysis pipeline and returns recommendations, KPIs, hourly time series, scenario comparisons, and sensitivity results. |
 
 ## Local Development
-
-### Prerequisites
-
-- Python 3.10+
-- Node.js 18+
-- npm
 
 ### Backend
 
@@ -86,10 +97,7 @@ pip install -r requirements.txt
 python -m uvicorn app.main:app --reload --port 8000
 ```
 
-The API will be available at `http://localhost:8000`. Test with:
-```bash
-curl http://localhost:8000/health
-```
+The backend will be available at `http://localhost:8000`.
 
 ### Frontend
 
@@ -99,67 +107,47 @@ npm install
 npm run dev
 ```
 
-The dashboard will be available at `http://localhost:3000`.
+The frontend will be available at `http://localhost:3000`.
 
-> The frontend proxies `/api/*` requests to the backend via Next.js rewrites.
+For local API routing, set:
 
----
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/health` | Health check |
-| `GET` | `/api/presets` | Returns building presets and default tariff/cost parameters |
-| `POST` | `/api/analyze` | Runs the full analysis pipeline and returns recommendation, KPIs, hourly series, scenario comparison, sensitivity, and explanations |
-
----
-
-## Deployment
-
-### Frontend → Vercel
-
-1. Import the repository on [vercel.com](https://vercel.com)
-2. Set **Root Directory** to `frontend`
-3. Set environment variable: `NEXT_PUBLIC_API_URL` = your Render backend URL
-4. Deploy
-
-### Backend → Render
-
-1. Connect the repository on [render.com](https://render.com)
-2. The `render.yaml` blueprint will auto-configure the service
-3. Set environment variable: `CORS_ORIGINS` = your Vercel frontend URL
-4. Deploy
-
----
-
-## Project Structure
-
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
+
+## Deployment Notes
+
+The frontend is configured for Vercel and should use the backend base URL through `NEXT_PUBLIC_API_URL`.
+
+The backend is configured for Render through `render.yaml`. In production, `CORS_ORIGINS` should include the deployed frontend URL:
+
+```text
+https://batteryems.vercel.app
+```
+
+## Repository Structure
+
+```text
 batteryems-ai/
 ├── backend/
 │   ├── app/
 │   │   ├── api/          # FastAPI route handlers
-│   │   ├── engine/       # Core simulation modules
-│   │   ├── schemas/      # Pydantic request/response models
-│   │   ├── services/     # Orchestration layer
-│   │   └── main.py       # App entry point
-│   └── requirements.txt
+│   │   ├── data/         # Presets and generated data artifacts
+│   │   ├── engine/       # Simulation and optimization modules
+│   │   ├── schemas/      # Pydantic request and response models
+│   │   ├── services/     # Analysis orchestration
+│   │   └── main.py       # FastAPI application entry point
+│   ├── scripts/          # Utility and benchmark scripts
+│   └── tests/            # Backend tests
 ├── frontend/
 │   ├── src/
-│   │   ├── app/          # Next.js pages and layout
-│   │   ├── components/   # UI components (charts, inputs, results)
-│   │   ├── lib/          # API client and formatters
-│   │   ├── store/        # Zustand state management
-│   │   └── types/        # TypeScript type definitions
+│   │   ├── app/          # Next.js app routes and layout
+│   │   ├── components/   # Input, chart, and result components
+│   │   ├── lib/          # API client and helpers
+│   │   ├── store/        # Zustand state store
+│   │   └── types/        # TypeScript API types
 │   └── package.json
-├── docs/                 # Implementation specification
-├── render.yaml           # Render deployment blueprint
+├── docs/                 # Implementation notes and specifications
+├── render.yaml           # Render service blueprint
 └── README.md
 ```
-
----
-
-## License
-
-This project is part of an academic course submission and is not licensed for commercial use.
