@@ -110,7 +110,7 @@ def generate_recommendations(
     payback_values = [float(item["simple_payback_years"]) for item in options if item["simple_payback_years"] is not None]
 
     for option in options:
-        option["score"] = round(
+        raw_score = (
             (0.45 * _normalize(float(option["annual_savings_inr"]), min(savings_values), max(savings_values)))
             + (0.25 * _normalize(float(option["peak_demand_reduction_pct"]), min(peak_values), max(peak_values)))
             + (0.20 * _normalize(float(option["grid_import_reduction_pct"]), min(import_values), max(import_values)))
@@ -121,9 +121,9 @@ def generate_recommendations(
                     min(payback_values or [0.0]),
                     max(payback_values or [1.0]),
                 )
-            ),
-            4,
+            )
         )
+        option["score"] = round(min(max(raw_score, 0.0), 1.0), 4)
 
     feasible_by_payback = [item for item in options if item["simple_payback_years"] is not None]
     best_balanced = max(options, key=lambda item: float(item["score"]))

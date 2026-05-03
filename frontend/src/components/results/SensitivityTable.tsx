@@ -103,7 +103,7 @@ export default function SensitivityTable() {
                     color: 'var(--amber)', fontWeight: 600, fontSize: 12,
                     fontVariantNumeric: 'tabular-nums',
                   }}>
-                    {row.simple_payback_years.toFixed(1)} yrs
+                    {row.simple_payback_years === null ? 'N/A' : `${row.simple_payback_years.toFixed(1)} yrs`}
                   </td>
                 </tr>
               );

@@ -9,7 +9,9 @@ from __future__ import annotations
 import pytest
 from fastapi.testclient import TestClient
 
+from app.engine.tariff import get_import_rate
 from app.main import app
+from app.schemas.request import TariffInput, ToUTariffInput
 
 client = TestClient(app)
 
@@ -119,3 +121,19 @@ def test_analyze_location_changes_solar_generation():
     kochi_solar = kochi_response.json()["kpis"]["annual_solar_generation_kwh"]
     chennai_solar = chennai_response.json()["kpis"]["annual_solar_generation_kwh"]
     assert chennai_solar > kochi_solar
+
+
+def test_tou_peak_rate_takes_precedence_over_off_peak_window():
+    tariff = TariffInput(
+        type="tou",
+        tou=ToUTariffInput(
+            off_peak_rate_inr_per_kwh=4.5,
+            standard_rate_inr_per_kwh=7.0,
+            peak_rate_inr_per_kwh=15.0,
+            peak_start_hour=18,
+            peak_end_hour=22,
+        ),
+        feed_in_rate_inr_per_kwh=2.5,
+    )
+
+    assert get_import_rate(22, tariff) == 15.0

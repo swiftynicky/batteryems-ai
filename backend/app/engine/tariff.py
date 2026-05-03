@@ -9,10 +9,10 @@ def get_import_rate(hour: int, tariff: TariffInput) -> float:
     if tariff.type == "flat" or tariff.tou is None:
         return tariff.flat_rate_inr_per_kwh
 
-    if 0 <= hour <= 5 or 22 <= hour <= 23:
-        return tariff.tou.off_peak_rate_inr_per_kwh
     if tariff.tou.peak_start_hour <= hour <= tariff.tou.peak_end_hour:
         return tariff.tou.peak_rate_inr_per_kwh
+    if 0 <= hour <= 5 or 22 <= hour <= 23:
+        return tariff.tou.off_peak_rate_inr_per_kwh
     return tariff.tou.standard_rate_inr_per_kwh
 
 

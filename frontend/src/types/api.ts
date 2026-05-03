@@ -30,6 +30,14 @@ export interface PresetsResponse {
   };
 }
 
+export interface TOUConfig {
+  off_peak_rate_inr_per_kwh: number;
+  standard_rate_inr_per_kwh: number;
+  peak_rate_inr_per_kwh: number;
+  peak_start_hour: number;
+  peak_end_hour: number;
+}
+
 // ─── Analyze Request ───
 
 export interface AnalyzeRequest {
@@ -43,7 +51,7 @@ export interface AnalyzeRequest {
   tariff: {
     type: 'flat' | 'tou';
     flat_rate_inr_per_kwh: number;
-    tou: null;
+    tou: TOUConfig | null;
     feed_in_rate_inr_per_kwh: number;
   };
   system_constraints: {
@@ -67,7 +75,7 @@ export interface RecommendationOption {
   solar_kw: number;
   battery_kwh: number;
   annual_savings_inr: number;
-  simple_payback_years: number;
+  simple_payback_years: number | null;
   peak_demand_reduction_pct: number;
   grid_import_reduction_pct: number;
   score: number;
@@ -77,7 +85,7 @@ export interface KPISet {
   annual_bill_inr: number;
   annual_savings_inr: number;
   savings_pct: number;
-  simple_payback_years: number;
+  simple_payback_years: number | null;
   peak_demand_reduction_pct: number;
   grid_import_reduction_pct: number;
   solar_self_consumption_pct: number;
@@ -126,7 +134,7 @@ export interface SensitivityRow {
   annual_bill_inr: number;
   annual_savings_inr: number;
   savings_pct: number;
-  simple_payback_years: number;
+  simple_payback_years: number | null;
 }
 
 export interface ForecastMetrics {
@@ -136,7 +144,7 @@ export interface ForecastMetrics {
 
 export interface AnalyzeResponse {
   recommendation: RecommendationOption;
-  best_by_payback: RecommendationOption;
+  best_by_payback: RecommendationOption | null;
   best_by_savings: RecommendationOption;
   explanations: string[];
   kpis: KPISet;
@@ -144,7 +152,7 @@ export interface AnalyzeResponse {
   hourly_series: HourlyPoint[];
   scenario_comparison: ScenarioComparison;
   scheduler_benchmark: SchedulerBenchmark[];
-  forecast_metrics: ForecastMetrics;
+  forecast_metrics: ForecastMetrics | null;
   sensitivity: SensitivityRow[];
   assumptions: string[];
 }

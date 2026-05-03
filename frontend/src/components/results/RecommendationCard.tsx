@@ -103,7 +103,7 @@ export default function RecommendationCard() {
           <MetricChip
             icon={<TrendingDown size={12} />}
             label="Simple Payback"
-            value={`${recommendation.simple_payback_years.toFixed(1)} yrs`}
+            value={formatPayback(recommendation.simple_payback_years)}
             color="var(--amber)"
           />
         </div>
@@ -121,13 +121,15 @@ export default function RecommendationCard() {
             display: 'flex', alignItems: 'center', marginRight: 4 }}>
             Alternatives
           </span>
-          <AltBadge
-            icon={<TrendingDown size={11} />}
-            title="Best Payback"
-            solar={best_by_payback.solar_kw}
-            battery={best_by_payback.battery_kwh}
-            detail={`${best_by_payback.simple_payback_years.toFixed(1)} yrs`}
-          />
+          {best_by_payback && (
+            <AltBadge
+              icon={<TrendingDown size={11} />}
+              title="Best Payback"
+              solar={best_by_payback.solar_kw}
+              battery={best_by_payback.battery_kwh}
+              detail={formatPayback(best_by_payback.simple_payback_years)}
+            />
+          )}
           {!sameAsSavings && (
             <AltBadge
               icon={<Award size={11} />}
@@ -150,6 +152,10 @@ export default function RecommendationCard() {
       </div>
     </motion.div>
   );
+}
+
+function formatPayback(value: number | null) {
+  return value === null ? 'N/A' : `${value.toFixed(1)} yrs`;
 }
 
 function MetricChip({

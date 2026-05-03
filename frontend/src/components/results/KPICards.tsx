@@ -5,6 +5,8 @@ import { useAnalysisStore } from '@/store/useAnalysisStore';
 import { formatINR, formatPct } from '@/lib/format';
 import { IndianRupee, Clock, Zap, ArrowDownRight, Sun } from 'lucide-react';
 
+type KpiValue = number | null;
+
 const kpiConfig = [
   {
     key: 'annual_savings_inr',
@@ -12,8 +14,8 @@ const kpiConfig = [
     icon: IndianRupee,
     color: 'var(--green)',
     accent: '#22A86E',
-    format: (v: number) => `₹${formatINR(v)}`,
-    sub: (kpis: Record<string, number>) => `${formatPct(kpis.savings_pct)} reduction`,
+    format: (v: KpiValue) => `₹${formatINR(v ?? 0)}`,
+    sub: (kpis: Record<string, KpiValue>) => `${formatPct(kpis.savings_pct ?? 0)} reduction`,
   },
   {
     key: 'simple_payback_years',
@@ -21,7 +23,7 @@ const kpiConfig = [
     icon: Clock,
     color: 'var(--amber)',
     accent: '#E8940A',
-    format: (v: number) => `${v.toFixed(1)} yrs`,
+    format: (v: KpiValue) => v === null ? 'N/A' : `${v.toFixed(1)} yrs`,
     sub: () => 'Simple payback',
   },
   {
@@ -30,7 +32,7 @@ const kpiConfig = [
     icon: Zap,
     color: 'var(--teal)',
     accent: '#0FA89A',
-    format: (v: number) => formatPct(v),
+    format: (v: KpiValue) => formatPct(v ?? 0),
     sub: () => 'Peak demand cut',
   },
   {
@@ -39,7 +41,7 @@ const kpiConfig = [
     icon: ArrowDownRight,
     color: 'var(--violet)',
     accent: '#7C6AF5',
-    format: (v: number) => formatPct(v),
+    format: (v: KpiValue) => formatPct(v ?? 0),
     sub: () => 'Annual reduction',
   },
   {
@@ -48,7 +50,7 @@ const kpiConfig = [
     icon: Sun,
     color: 'var(--amber-bright)',
     accent: '#F5A623',
-    format: (v: number) => formatPct(v),
+    format: (v: KpiValue) => formatPct(v ?? 0),
     sub: () => 'Solar used on-site',
   },
 ];
@@ -57,7 +59,7 @@ export default function KPICards() {
   const result = useAnalysisStore((s) => s.result);
   if (!result) return null;
 
-  const kpis = result.kpis as unknown as Record<string, number>;
+  const kpis = result.kpis as unknown as Record<string, KpiValue>;
 
   return (
     <div style={{
