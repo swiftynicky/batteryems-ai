@@ -82,6 +82,7 @@ def generate_recommendations(
             evaluation = evaluate_annual_scenarios(
                 preset_id=request.building.preset_id,
                 monthly_kwh=request.building.monthly_kwh,
+                location=request.building.location,
                 tariff=request.tariff,
                 solar_kw=solar_kw,
                 battery_kwh=battery_kwh,

@@ -157,6 +157,7 @@ def _scheduler_benchmark(
         evaluation = evaluate_annual_scenarios(
             preset_id=benchmark_request.building.preset_id,
             monthly_kwh=benchmark_request.building.monthly_kwh,
+            location=benchmark_request.building.location,
             tariff=benchmark_request.tariff,
             solar_kw=solar_kw,
             battery_kwh=battery_kwh,
@@ -202,6 +203,7 @@ def _sensitivity_analysis(request: AnalyzeRequest, solar_kw: float, battery_kwh:
         evaluation = evaluate_annual_scenarios(
             preset_id=request.building.preset_id,
             monthly_kwh=request.building.monthly_kwh,
+            location=request.building.location,
             tariff=tariff,
             solar_kw=solar_kw,
             battery_kwh=battery_kwh,

@@ -19,6 +19,7 @@ def _round_series(values: List[float]) -> List[float]:
 def evaluate_day_type_scenarios(
     preset_id: str,
     monthly_kwh: float,
+    location: str,
     day_type: str,
     tariff: TariffInput,
     solar_kw: float,
@@ -29,7 +30,13 @@ def evaluate_day_type_scenarios(
     cloudiness: Optional[float] = None,
 ) -> Dict[str, Dict[str, object]]:
     load_profile = generate_load_profile(preset_id=preset_id, monthly_kwh=monthly_kwh, day_type=day_type, seed=seed)
-    solar_profile = generate_solar_profile(installed_kw=solar_kw, day_type=day_type, cloudiness=cloudiness, seed=seed + 10)
+    solar_profile = generate_solar_profile(
+        installed_kw=solar_kw,
+        day_type=day_type,
+        location=location,
+        cloudiness=cloudiness,
+        seed=seed + 10,
+    )
 
     grid_only_imports = _round_series(load_profile)
     grid_only_exports = [0.0] * 24
@@ -120,6 +127,7 @@ def evaluate_day_type_scenarios(
 def evaluate_annual_scenarios(
     preset_id: str,
     monthly_kwh: float,
+    location: str,
     tariff: TariffInput,
     solar_kw: float,
     battery_kwh: float,
@@ -138,6 +146,7 @@ def evaluate_annual_scenarios(
         day_results = evaluate_day_type_scenarios(
             preset_id=preset_id,
             monthly_kwh=monthly_kwh,
+            location=location,
             day_type=day_type,
             tariff=tariff,
             solar_kw=solar_kw,

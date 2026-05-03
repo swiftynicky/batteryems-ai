@@ -7,6 +7,12 @@ import numpy as np
 from app.schemas.common import season_from_day_type
 
 
+LOCATION_IRRADIANCE_MULTIPLIERS = {
+    "Kochi": 0.96,
+    "Bengaluru": 1.02,
+    "Chennai": 1.08,
+}
+
 SEASONAL_IRRADIANCE = {
     "summer": 5.7,
     "monsoon": 4.4,
@@ -25,6 +31,7 @@ DERATING_FACTOR = 0.87
 def generate_solar_profile(
     installed_kw: float,
     day_type: str,
+    location: str = "Kochi",
     cloudiness: Optional[float] = None,
     seed: Optional[int] = None,
 ) -> List[float]:
@@ -43,7 +50,7 @@ def generate_solar_profile(
     gaussian[(hours < sunrise) | (hours > sunset)] = 0
 
     cloud_factor = 1.0 - (cloudiness if cloudiness is not None else rng.uniform(0.1, 0.35))
-    peak_sun_hours = SEASONAL_IRRADIANCE.get(season, 4.8)
+    peak_sun_hours = SEASONAL_IRRADIANCE.get(season, 4.8) * LOCATION_IRRADIANCE_MULTIPLIERS.get(location, 1.0)
 
     profile = gaussian / gaussian.sum()
     daily_energy = installed_kw * peak_sun_hours * DERATING_FACTOR * cloud_factor
